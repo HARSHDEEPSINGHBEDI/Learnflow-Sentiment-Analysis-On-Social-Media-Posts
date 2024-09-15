@@ -1,25 +1,121 @@
-# Learnflow-Sentiment-Analysis-On-Social-Media-Posts
+# Learnflow Sentiment Analysis on Social Media Posts
 
-Here is a concise breakdown of what I accomplished in the provided code:
+## Project Overview
 
-1. **Imported Essential Libraries**: I started by importing crucial Python libraries such as NumPy, Pandas, Matplotlib, Seaborn, NLTK, WordCloud, and scikit-learn.
+This project focuses on sentiment analysis of Instagram reviews using natural language processing (NLP) techniques and machine learning models. The goal is to classify sentiments into various categories using polarity scores derived from the review texts.
 
-2. **Loaded Dataset**: I loaded a dataset containing Instagram reviews from a CSV file.
+## Key Accomplishments
 
-3. **Explored the Data**: I conducted an initial exploration of the dataset, understanding its dimensions, summary statistics, basic information, as well as the presence of missing values and duplicates.
+1. **Imported Essential Libraries**: 
+   - Libraries such as NumPy, Pandas, Matplotlib, Seaborn, NLTK, WordCloud, and scikit-learn were used for data manipulation, visualization, and modeling.
 
-4. **Data Cleaning**: I proceeded to clean the data by removing the 'review_date' column, eliminating duplicated records, and sanitizing the 'review_description' text by eliminating mentions, hashtags, retweets, and hyperlinks.
+2. **Loaded Dataset**: 
+   - A dataset containing Instagram reviews was loaded from a CSV file for analysis.
+     ```python
+     url = 'https://learnflow.cloud/loginpage/dashboard/source%20code/2_week_program/ML_2_week/sentimentdataset.csv'
+     ```
 
-5. **Performed Sentiment Analysis**: I employed the TextBlob library to compute sentiment subjectivity and polarity for each review description.
+3. **Explored the Data**: 
+   - Conducted data exploration to understand its dimensions, summary statistics, missing values, and duplicates.
 
-6. **Generated Word Cloud**: I created a word cloud visualization based on the processed review descriptions, offering a visual representation of common terms.
+4. **Data Cleaning**: 
+   - Removed the `'Unnamed: 0.1', 'Unnamed: 0', 'Timestamp', 'User', 'Hashtags'` columns, eliminated duplicates, and cleaned `Text` by removing mentions, hashtags, retweets, and URLs.
 
-7. **Categorized Sentiments**: I defined a function to categorize sentiments (negative, neutral, positive) relying on polarity values. This categorization was then applied to produce a new 'Sentiment Analysis' column.
+5. **Performed Sentiment Analysis**: 
+   - Utilized TextBlob to calculate sentiment polarity and subjectivity for each review.
 
-8. **Visualized Data**: I employed various visualizations, including KDE plots and histograms, to showcase the distribution of polarity and the count of different sentiment categories.
+6. **Generated Word Cloud**: 
+   - Created a word cloud to visualize frequently occurring words in the reviews.
 
-9. **Implemented Machine Learning**: I transformed sentiment labels into numerical values, prepped the data for model training, and constructed a pipeline incorporating vectorization, TF-IDF transformation, and a Multinomial Naive Bayes classifier.
+7. **Categorized Sentiments**: 
+   - Defined a function to categorize sentiments (positive, negative, neutral) based on polarity scores, and applied it to create a new `Sentiment_Analysis` column.
 
-10. **Trained and Evaluated Model**: I trained the pipeline on a designated training set, utilized it to make predictions on a separate test set, and gauged the model's performance via metrics like a confusion matrix, classification report, and accuracy score.
+8. **Visualized Data**: 
+   - Used KDE plots and histograms to visualize the distribution of polarity and sentiment categories.
 
-In summary, I conducted a comprehensive sentiment analysis of Instagram reviews, undertook data cleaning and preparation, visualized sentiment distributions, and crafted a machine learning model for sentiment classification.
+9. **Implemented Machine Learning**: 
+   - Created a pipeline with vectorization, TF-IDF transformation, and a Multinomial Naive Bayes classifier to predict sentiment categories.
+
+10. **Trained and Evaluated Model**: 
+    - Trained the model on a training set, made predictions on a test set, and evaluated performance using metrics such as accuracy, confusion matrix, and classification report.
+
+## Approaches Used
+
+### Approach 1: Using Pre-defined Sentiments
+
+This approach involved using the default 'Sentiment' column provided in the dataset to train the model and obtain accuracy. However, this method does not align with the goal of deriving sentiments directly from the text.
+
+### Approach 2: Using Polarity to Derive Sentiments
+
+This approach involved the following steps:
+
+- **Text Processing**: Used libraries like TextBlob to calculate the polarity of each review's text.
+  
+  #### A) Fine-Grained Sentiment Categorization
+  - **Custom Sentiment Categories**:
+    - Created a function (`categorize_sentiment`) to assign custom sentiment categories based on polarity scores.
+    - This approach categorized emotions into a fine-grained list of unique sentiments, leading to **46-48% accuracy** in RandomForest, SVM, and MNB models.
+
+    ```python
+    # Unique Sentiments
+    sentiment_list = [
+        # Positive Emotions
+        'Euphoria', 'Ecstasy', 'Elation', 'Joy', 'Excitement', 'Happiness', 'Love',
+        'Contentment', 'Amusement', 'Admiration', 'Affection', 'Awe', 'Adoration', 
+        'Calmness', 'Surprise', 'Anticipation', 'Pride', 'Gratitude', 'Playful', 'Hopeful',
+        
+        # Neutral Emotion
+        'Neutral',
+        
+        # Mild Negative Emotions
+        'Boredom', 'Confusion', 'Sadness', 'Fear', 'Anger', 'Disgust', 'Shame', 
+        'Frustration', 'Guilt', 'Melancholy',
+        
+        # Strong Negative Emotions
+        'Grief', 'Despair', 'Loneliness', 'Betrayal', 'Desolation', 'Severe Sadness',
+        
+        # Undefined Category
+        'Undefined Emotion'
+    ]
+    ```
+
+  #### B) Broader Sentiment Categorization
+  - **Custom Sentiment Categories**:
+    - Created a function (`map_sentiment_category`) to map sentiments into broader categories based on polarity scores.
+    - This approach yielded **65-70% accuracy** in RandomForest, SVM, and MNB models.
+
+    ```python
+    # Broader Sentiment Categories
+    
+    # Positive Sentiments
+    positive_sentiments = [
+        'Positive', 'Happiness', 'Joy', 'Love', 'Excitement', 'Enjoyment', 'Elation', 'Euphoria',
+        'Admiration', 'Affection', 'Awe', 'Contentment', 'Serenity', 'Gratitude', 'Hope',
+        'Empowerment', 'Compassion', 'Tenderness', 'Amusement', 'Enthusiasm', 'Fulfillment', 
+        'Pride', 'Surprise', 'Adoration', 'Optimism', 'Confidence'
+    ]
+
+    # Neutral Sentiments
+    neutral_sentiments = [
+        'Neutral', 'Calmness', 'Confusion', 'Acceptance', 'Indifference', 'Ambivalence', 
+        'Serenity', 'Curiosity', 'Reflection', 'Contemplation', 'Tranquility'
+    ]
+
+    # Negative Sentiments
+    negative_sentiments = [
+        'Anger', 'Fear', 'Sadness', 'Disgust', 'Bitter', 'Resentment', 'Jealousy', 'Regret', 
+        'Frustration', 'Loneliness', 'Despair', 'Grief', 'Anxiety', 'Helplessness', 'Desperation', 
+        'Isolation', 'Heartbreak', 'Betrayal', 'Sorrow', 'Melancholy'
+    ]
+    ```
+
+## Conclusion
+
+The broader sentiment categorization approach provided better accuracy compared to the fine-grained classification. Although finer sentiment categories offer more detailed emotional insight, they are more challenging to classify accurately due to overlapping categories and similar textual patterns.
+
+## Future Work
+
+- Explore advanced models like LSTM and BERT for improved accuracy if given opportunity.
+
+
+
